@@ -1,0 +1,19 @@
+{
+  "name": ".NET 10 + SQL Server 2025",
+  "dockerComposeFile": "../compose.yaml",
+  "service": "dev",
+  "workspaceFolder": "/workspaces/aspnet-boilerplate",
+  "remoteUser": "app",
+  "updateRemoteUserUID": true,
+  "overrideCommand": false,
+  "shutdownAction": "stopCompose",
+  "postAttachCommand": "sh .devcontainer/configure-git-ssh.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "ms-mssql.mssql"
+      ]
+    }
+  }
+}

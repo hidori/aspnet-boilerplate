@@ -1,0 +1,24 @@
+<Solution>
+  <Project Path="Boilerplate.Admin/Boilerplate.Admin.csproj" />
+  <Project Path="Boilerplate.Admin.Application.Tests/Boilerplate.Admin.Application.Tests.csproj" />
+  <Project Path="Boilerplate.Admin.Application/Boilerplate.Admin.Application.csproj" />
+  <Project Path="Boilerplate.Admin.Infrastructure.Tests/Boilerplate.Admin.Infrastructure.Tests.csproj" />
+  <Project Path="Boilerplate.Admin.Infrastructure/Boilerplate.Admin.Infrastructure.csproj" />
+  <Project Path="Boilerplate.Admin.Tests/Boilerplate.Admin.Tests.csproj" />
+  <Project Path="Boilerplate.Admin.Web.Tests/Boilerplate.Admin.Web.Tests.csproj" />
+  <Project Path="Boilerplate.Admin.Web/Boilerplate.Admin.Web.csproj" />
+  <Project Path="Boilerplate.Api/Boilerplate.Api.csproj" />
+  <Project Path="Boilerplate.Api.Application.Tests/Boilerplate.Api.Application.Tests.csproj" />
+  <Project Path="Boilerplate.Api.Application/Boilerplate.Api.Application.csproj" />
+  <Project Path="Boilerplate.Api.Infrastructure.Tests/Boilerplate.Api.Infrastructure.Tests.csproj" />
+  <Project Path="Boilerplate.Api.Infrastructure/Boilerplate.Api.Infrastructure.csproj" />
+  <Project Path="Boilerplate.Api.Tests/Boilerplate.Api.Tests.csproj" />
+  <Project Path="Boilerplate.Api.Web.Tests/Boilerplate.Api.Web.Tests.csproj" />
+  <Project Path="Boilerplate.Api.Web/Boilerplate.Api.Web.csproj" />
+  <Project Path="Boilerplate.Domain.Tests/Boilerplate.Domain.Tests.csproj" />
+  <Project Path="Boilerplate.Domain/Boilerplate.Domain.csproj" />
+  <Project Path="Boilerplate.Infrastructure.Tests/Boilerplate.Infrastructure.Tests.csproj" />
+  <Project Path="Boilerplate.Infrastructure/Boilerplate.Infrastructure.csproj" />
+  <Project Path="Boilerplate.Web.Tests/Boilerplate.Web.Tests.csproj" />
+  <Project Path="Boilerplate.Web/Boilerplate.Web.csproj" />
+</Solution>

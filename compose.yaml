@@ -1,0 +1,122 @@
+x-dotnet: &dotnet
+  build:
+    context: .
+    dockerfile: .devcontainer/Dockerfile
+    target: runtime
+  working_dir: /workspaces/aspnet-boilerplate
+  environment: &dotnet-environment
+    ASPNETCORE_ENVIRONMENT: Development
+    ASPNETCORE_URLS: http://0.0.0.0:8080
+    DOTNET_USE_POLLING_FILE_WATCHER: "1"
+    DOTNET_WATCH_RESTART_ON_RUDE_EDIT: "1"
+    ConnectionStrings__DefaultConnection: "Server=db,1433;Database=master;User Id=sa;Password=${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env};Encrypt=True;TrustServerCertificate=True"
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  dev:
+    <<: *dotnet
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+      target: dev
+    command: sleep infinity
+    environment:
+      <<: *dotnet-environment
+      ASPNETCORE_URLS: http://0.0.0.0:8100
+      REPAIR_GIT_OWNERSHIP: "1"
+      REPAIR_DEV_STATE_OWNERSHIP: "1"
+    ports:
+      - "127.0.0.1:8100:8100"
+      - "127.0.0.1:8101:8101"
+    volumes:
+      - .:/workspaces/aspnet-boilerplate
+      - dev-nuget-packages:/home/app/.nuget/packages
+      - dev-artifacts:/workspaces/aspnet-boilerplate/.artifacts
+      - dev-vscode-data:/home/app/.vscode-server/data
+      - dev-copilot-state:/home/app/.copilot
+    depends_on:
+      api:
+        condition: service_healthy
+      admin:
+        condition: service_healthy
+
+  api:
+    <<: *dotnet
+    command:
+      - dotnet
+      - watch
+      - --project
+      - Boilerplate.Api/Boilerplate.Api.csproj
+      - --non-interactive
+      - run
+      - --no-launch-profile
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - .:/workspaces/aspnet-boilerplate:ro
+      - api-nuget-packages:/home/app/.nuget/packages
+      - api-artifacts:/workspaces/aspnet-boilerplate/.artifacts
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "5", "http://localhost:8080/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+  admin:
+    <<: *dotnet
+    command:
+      - dotnet
+      - watch
+      - --project
+      - Boilerplate.Admin/Boilerplate.Admin.csproj
+      - --non-interactive
+      - run
+      - --no-launch-profile
+    environment:
+      <<: *dotnet-environment
+      ASPNETCORE_URLS: http://0.0.0.0:8081
+    ports:
+      - "127.0.0.1:8081:8081"
+    volumes:
+      - .:/workspaces/aspnet-boilerplate:ro
+      - admin-nuget-packages:/home/app/.nuget/packages
+      - admin-artifacts:/workspaces/aspnet-boilerplate/.artifacts
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "5", "http://localhost:8081/"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env}"
+    ports:
+      - "127.0.0.1:1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'SQLCMDPASSWORD="$$MSSQL_SA_PASSWORD" /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -C -b -l 5 -Q "SELECT 1" > /dev/null'
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+volumes:
+  admin-artifacts:
+  admin-nuget-packages:
+  api-artifacts:
+  api-nuget-packages:
+  dev-artifacts:
+  dev-copilot-state:
+  dev-nuget-packages:
+  dev-vscode-data:
+  sqlserver-data:
