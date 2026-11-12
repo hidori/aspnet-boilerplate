@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS runtime
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS runtime
 
 ENV HOME=/home/app \
     DOTNET_CLI_HOME=/home/app \
